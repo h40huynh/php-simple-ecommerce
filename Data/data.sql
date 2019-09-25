@@ -15,5 +15,5 @@ create table if not exists products(
   cat_id int,
   url varchar(255),
   primary key(id),
-  foreign key(cat_id) references categories(id)
+  foreign key(cat_id) references categories(cat_id)
 );

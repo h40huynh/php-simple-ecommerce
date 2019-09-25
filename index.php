@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <title>Project web</title>
+  <title>Huynh Nhat Hao</title>
 </head>
 
 <body>
@@ -56,28 +56,21 @@
           <h3>
             Categories
           </h3>
-          <a href="#" class="list-group-item list-group-item-action">Item 1</a>
-          <a href="#" class="list-group-item list-group-item-action">Item 2</a>
-          <a href="#" class="list-group-item list-group-item-action">Item 3</a>
+          <?php
+          include "./presentation/categoryP.php";
+          $cp = new CategoryPresentation();
+          $cp->ShowAllCategories();
+          ?>
         </div>
         <!-- /Side nav -->
       </div>
       <div class="col-sm-9">
         <!-- Products list -->
-        <h3 class="mt-2">Products</h3>
         <div class="row">
-          <?php for ($i = 0; $i < 6; $i++) { ?>
-            <div class="col-sm-4">
-              <div class="card mt-2">
-                <img src="..." class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">Card title</h5>
-                  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                  <a href="#" class="btn btn-primary">Go somewhere</a>
-                </div>
-              </div>
-            </div>
-          <?php } ?>
+          <?php include "./presentation/productP.php";
+          $pb = new ProductionPresentation();
+          $pb->ShowProduct();
+          ?>
         </div>
 
         <!-- /Products list -->
