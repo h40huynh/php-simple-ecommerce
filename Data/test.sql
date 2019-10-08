@@ -2,21 +2,33 @@ use nt208;
 
 insert into categories(cat_name) values('Laptop');
 insert into categories(cat_name) values('Camera');
-insert into categories(cat_name) values('Drink');
-
 insert into categories(cat_name) values('Phone');
 insert into categories(cat_name) values('Tablet');
 
-insert into products(name, cat_id) values('Thinkpad', 1);
-insert into products(name, cat_id) values('Thinkpad 2', 1);
-insert into products(name, cat_id) values('Thinkpad 3', 1);
+insert into products(name, cat_id, price) values('Laptop 1', 1, 9.99);
+insert into products(name, cat_id, price) values('Laptop 2', 1, 9.99);
+insert into products(name, cat_id, price) values('Laptop 3', 1, 9.99);
 
-insert into products(name, cat_id) values('Camera', 2);
-insert into products(name, cat_id) values('Camera 2', 2);
-insert into products(name, cat_id) values('Camera 3', 2);
+insert into products(name, cat_id, price) values('Camera 1', 2, 9.99);
+insert into products(name, cat_id, price) values('Camera 2', 2, 9.99);
+insert into products(name, cat_id, price) values('Camera 3', 2, 9.99);
 
-insert into products(name, cat_id) values('Dr Thanh', 3);
-insert into products(name, cat_id) values('Number 1', 3);
-insert into products(name, cat_id) values('Nutri boost', 1);
-DELETE  FROM `products` WHERE name = 'Nutri boost';
+insert into products(name, cat_id, price) values('iPhone 1', 3, 9.99);
+insert into products(name, cat_id, price) values('iPhone 2', 3, 9.99);
+insert into products(name, cat_id, price) values('iPhone 3', 3, 9.99);
 
+insert into products(name, cat_id, price) values('iPad 1', 4, 9.99);
+insert into products(name, cat_id, price) values('iPad 2', 4, 9.99);
+insert into products(name, cat_id, price) values('iPad 3', 4, 9.99);
+
+insert into inventory_in(product_id, import_date, quantity) values(1, '2019-9-3 00:00:00', 2);
+insert into inventory_in(product_id, import_date, quantity) values(2, '2019-9-3 00:00:00', 8);
+
+insert into inventory_out(inventory_id, export_date, quantity) values(1, '2019-9-4 00:00:00', 1);
+insert into inventory_out(inventory_id, export_date, quantity) values(2, '2019-9-4 00:00:00', 1);
+
+insert into inventory_management(inventory_id, in_stock, sold_amount, update_date, update_type) values (1, 2, 0, '2019-9-3 00:00:00', 'IN');
+insert into inventory_management(inventory_id, in_stock, sold_amount, update_date, update_type) values (2, 8, 0, '2019-9-3 00:00:00', 'IN');
+
+insert into inventory_management(inventory_id, in_stock, sold_amount, update_date, update_type) values (1, 1, 1, '2019-9-4 00:00:00', 'OUT');
+insert into inventory_management(inventory_id, in_stock, sold_amount, update_date, update_type) values (2, 7, 1, '2019-9-4 00:00:00', 'OUT');
