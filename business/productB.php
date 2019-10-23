@@ -2,6 +2,14 @@
 
 class ProductBusiness
 {
+  public function GetProductByID($product_id)
+  {
+    $sql = "SELECT * FROM Products WHERE id = {$product_id}";
+    $db = new Database();
+    $result = $db->select($sql);
+    return $result;
+  }
+
   public function GetProductInCategory()
   {
     $cat_id = $this->GetCurrentCategory();
@@ -13,6 +21,6 @@ class ProductBusiness
 
   public function GetCurrentCategory()
   {
-    return isset($_GET['category']) ? $_GET['category'] : 1;
+    return isset($_GET['category']) ? $_GET['category'] : 0;
   }
 }

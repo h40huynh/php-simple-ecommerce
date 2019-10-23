@@ -32,3 +32,18 @@ insert into inventory_management(inventory_id, in_stock, sold_amount, update_dat
 
 insert into inventory_management(inventory_id, in_stock, sold_amount, update_date, update_type) values (1, 1, 1, '2019-9-4 00:00:00', 'OUT');
 insert into inventory_management(inventory_id, in_stock, sold_amount, update_date, update_type) values (2, 7, 1, '2019-9-4 00:00:00', 'OUT');
+
+insert into inventory_out(inventory_id, export_date, quantity) values(2, '2019-9-4 00:00:00', 1);
+insert into inventory_out(inventory_id, export_date, quantity) values(2, '2019-9-4 00:00:00', 1);
+insert into inventory_out(inventory_id, export_date, quantity) values(2, '2019-9-4 00:00:00', 1);
+insert into inventory_management(inventory_id, in_stock, sold_amount, update_date, update_type) values (2, 6, 2, '2019-9-4 00:00:00', 'OUT');
+insert into inventory_management(inventory_id, in_stock, sold_amount, update_date, update_type) values (2, 5, 3, '2019-9-4 00:00:00', 'OUT');
+insert into inventory_management(inventory_id, in_stock, sold_amount, update_date, update_type) values (2, 4, 4, '2019-9-4 00:00:00', 'OUT');
+
+insert into inventory_out(inventory_id, export_date, quantity) values(2, '2019-9-4 00:00:00', 1);
+insert into inventory_management(inventory_id, in_stock, sold_amount, update_date, update_type) values (2, 3, 5, '2019-9-4 00:00:00', 'OUT');
+
+insert into inventory_out(inventory_id, export_date, quantity) values(1, '2019-9-4 00:00:00', 1);
+insert into inventory_management(inventory_id, in_stock, sold_amount, update_date, update_type) values (1, 0, 2, '2019-9-4 00:00:00', 'OUT');
+
+SELECT DISTINCT product_id from inventory_performance where from_date > '2019-9-1'

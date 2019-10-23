@@ -1,14 +1,14 @@
 --drop database if exists nt208;
 create database if not exists nt208;
 use nt208;
-drop table if exists categories;
+--drop table if exists categories;
 create table if not exists categories(
   cat_id int not null auto_increment,
   cat_name varchar(255),
   primary key(cat_id)
 );
 
-drop table if exists products;
+--drop table if exists products;
 create table if not exists products(
   id int not null auto_increment,
   name varchar(255),
@@ -52,12 +52,21 @@ create table if not exists inventory_management(
   foreign key(inventory_id) references inventory_in(inventory_id)
 );
 
+drop table inventory_performance;
 create table if not exists inventory_performance(
   ip_id int not null auto_increment,
-  inventory_id int,
+  product_id int,
   from_date datetime,
   to_date datetime,
   performance float,
   primary key(ip_id),
-  foreign key(inventory_id) references inventory_in(inventory_id)
+  foreign key(product_id) references products(id)
+);
+
+create table if not exists product_analysis(
+  table_id int not null auto_increment,
+  product_id int,
+  visited_date datetime,
+  primary key(table_id),
+  foreign key(product_id) references products(id)
 );

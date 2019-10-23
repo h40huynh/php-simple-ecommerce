@@ -69,7 +69,7 @@
         <div class="row">
           <?php include "./presentation/productP.php";
           $pb = new ProductionPresentation();
-          $pb->ShowProductsByUser();
+          $pb->ShowItem();
           ?>
         </div>
 
