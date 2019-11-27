@@ -47,3 +47,25 @@ insert into inventory_out(inventory_id, export_date, quantity) values(1, '2019-9
 insert into inventory_management(inventory_id, in_stock, sold_amount, update_date, update_type) values (1, 0, 2, '2019-9-4 00:00:00', 'OUT');
 
 SELECT DISTINCT product_id from inventory_performance where from_date > '2019-9-1'
+
+insert into products(name, cat_id, price) values('Laptop 1', 1, 9.99);
+insert into products(name, cat_id, price) values('Laptop 1', 1, 9.99);
+insert into products(name, cat_id, price) values('Laptop 1', 1, 9.99);
+insert into products(name, cat_id, price) values('Laptop 1', 1, 9.99);
+insert into products(name, cat_id, price) values('Laptop 1', 1, 9.99);
+insert into products(name, cat_id, price) values('Laptop 1', 1, 9.99);
+insert into products(name, cat_id, price) values('Laptop 1', 1, 9.99);
+insert into products(name, cat_id, price) values('Laptop 1', 1, 9.99);
+
+insert into products(name, cat_id, price) values('Camera NEW', 2, 19.99);
+insert into products(name, cat_id, price) values('Camera NEW', 2, 39.99);
+insert into products(name, cat_id, price) values('Camera NEW', 2, 29.99);
+insert into products(name, cat_id, price) values('Camera NEW', 2, 29.99);
+
+insert into rules(class_or_id, name, matching_ratio) values("class", "area_price", 0);
+insert into rules(class_or_id, name, matching_ratio) values("class", "fs_dtprice", 0);
+insert into rules(class_or_id, name, matching_ratio) values("class or id", "price", 0);
+insert into rules(class_or_id, name, matching_ratio) values("class", "mc-lpri", 0);
+
+insert into dataset(product_name, link_name) values("iphone x 64gb", "https://www.thegioididong.com/dtdd/iphone-x-64gb");
+insert into dataset(product_name, link_name) values("iphone x 64gb", "https://fptshop.com.vn/dien-thoai/iphone-x");

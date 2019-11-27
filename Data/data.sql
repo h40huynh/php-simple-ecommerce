@@ -70,3 +70,26 @@ create table if not exists product_analysis(
   primary key(table_id),
   foreign key(product_id) references products(id)
 );
+
+create table if not exists rules(
+  rule_id int not null auto_increment primary key,
+  class_or_id varchar(255),
+  name varchar(255),
+  matching_ratio float
+);
+
+create table if not exists dataset(
+  link_id int not null auto_increment primary key,
+  product_name varchar(255),
+  link_name varchar(255)
+);
+
+create table if not exists rules_and_dataset(
+  table_id int not null auto_increment primary key,
+  rule_id int,
+  link_id int,
+  is_visited int,
+  is_identified_price int,
+  foreign key(rule_id) references rules(rule_id),
+  foreign key(link_id) references dataset(link_id)
+);

@@ -72,7 +72,16 @@
           $pb->ShowProductsByUser();
           ?>
         </div>
+        <div class="mt-2">
 
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <?php
+              $cp->ShowPagingLink();
+              ?>
+            </ul>
+          </nav>
+        </div>
         <!-- /Products list -->
       </div>
     </div>

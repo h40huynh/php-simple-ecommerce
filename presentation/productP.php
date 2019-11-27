@@ -4,29 +4,29 @@ include "./business/inventoryB.php";
 include "./business/productAnalysisB.php";
 class ProductionPresentation
 {
-  public function ShowItem()
-  {
-    $product_id = $this->GetProductId();
+	public function ShowItem()
+	{
+		$product_id = $this->GetProductId();
 
-    $pb = new ProductBusiness();
-    $result = $pb->GetProductByID($product_id);
-    $row = mysqli_fetch_array($result);
-    $name = $row['name'];
-    $price = $row['price'];
-    $this->ShowSingleProduct($name, $price);
+		$pb = new ProductBusiness();
+		$result = $pb->GetProductByID($product_id);
+		$row = mysqli_fetch_array($result);
+		$name = $row['name'];
+		$price = $row['price'];
+		$this->ShowSingleProduct($name, $price);
 
-    $pab = new ProductAnalysisBusiness();
-    $pab->UpdateViewOfProduct($product_id);
-  }
+		$pab = new ProductAnalysisBusiness();
+		$pab->UpdateViewOfProduct($product_id);
+	}
 
-  public function GetProductId()
-  {
-    return isset($_GET['product_id']) ? $_GET['product_id'] : 0;
-  }
+	public function GetProductId()
+	{
+		return isset($_GET['product_id']) ? $_GET['product_id'] : 0;
+	}
 
-  public function ShowSingleProduct($name, $price)
-  {
-    $product = <<<DELIMITER
+	public function ShowSingleProduct($name, $price)
+	{
+		$product = <<<DELIMITER
     <div class="col-sm-12">
       <div class="card mt-2">
         <img src="http://placehold.it/700x400" class="card-img-top" alt="...">
@@ -39,12 +39,12 @@ class ProductionPresentation
       </div>
     </div>
     DELIMITER;
-    echo $product;
-  }
+		echo $product;
+	}
 
-  public function ShowProduct($name, $price, $id)
-  {
-    $product = <<<DELIMITER
+	public function ShowProduct($name, $price, $id)
+	{
+		$product = <<<DELIMITER
     <div class="col-sm-4">
       <div class="card mt-2">
         <img src="http://placehold.it/700x400" class="card-img-top">
@@ -57,38 +57,51 @@ class ProductionPresentation
       </div>
     </div>
     DELIMITER;
-    echo $product;
-  }
+		echo $product;
+	}
 
-  public function ShowProductsByUser()
-  {
-    $pb = new ProductBusiness();
-    $cat_id = $pb->GetCurrentCategory();
-    if ($cat_id == 0) {
-      $this->ShowFeaturedProduct();
-    } else {
-      $this->ShowProductInCategory();
-    }
-  }
+	public function ShowProductsByUser()
+	{
+		$pb = new ProductBusiness();
+		$cat_id = $pb->GetCurrentCategory();
+		if ($cat_id == 0) {
+			$this->ShowFeaturedProduct();
+		} else {
+			//$this->ShowProductInCategory();
+			$this->ShowProductByPage();
+		}
+	}
 
-  public function ShowFeaturedProduct()
-  {
-    $ib = new InventoryBusiness();
-    $featuredList = $ib->GetPoorPerformanceList("2019-08-01", "2019-10-05");
-    foreach ($featuredList as $product_id => $performance) {
-      $pb = new ProductBusiness();
-      $result = $pb->GetProductByID($product_id);
-      $row = mysqli_fetch_array($result);
-      $this->ShowProduct($row['name'], $row['price'], $row['id']);
-    }
-  }
+	public function ShowFeaturedProduct()
+	{
+		$ib = new InventoryBusiness();
+		$featuredList = $ib->GetPoorPerformanceList("2019-08-01", "2019-10-05");
+		foreach ($featuredList as $product_id => $performance) {
+			$pb = new ProductBusiness();
+			$result = $pb->GetProductByID($product_id);
+			$row = mysqli_fetch_array($result);
+			$this->ShowProduct($row['name'], $row['price'], $row['id']);
+		}
+	}
 
-  public function ShowProductInCategory()
-  {
-    $pb = new ProductBusiness();
-    $result = $pb->GetProductInCategory();
-    while ($row = mysqli_fetch_array($result)) {
-      $this->ShowProduct($row['name'], $row['price'], $row['id']);
-    }
-  }
+	public function ShowProductInCategory()
+	{
+		$pb = new ProductBusiness();
+		$result = $pb->GetProductInCategory();
+		while ($row = mysqli_fetch_array($result)) {
+			$this->ShowProduct($row['name'], $row['price'], $row['id']);
+		}
+	}
+
+	// --
+	public function ShowProductByPage()
+	{
+		$page = isset($_GET['page']) ? $_GET['page'] : 1;
+		$cat = isset($_GET['category']) ? $_GET['category'] : 0;
+		$cb = new CategoryBusiness();
+		$result = $cb->GetProductInGroup($cat, $page);
+		while ($row = mysqli_fetch_array($result)) {
+			$this->ShowProduct($row['name'], $row['price'], $row['id']);
+		}
+	}
 }
