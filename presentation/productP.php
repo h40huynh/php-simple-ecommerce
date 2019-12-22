@@ -96,11 +96,22 @@ class ProductionPresentation
 	// --
 	public function ShowProductByPage()
 	{
+		$result = NULL;
+
 		$page = isset($_GET['page']) ? $_GET['page'] : 1;
 		$cat = isset($_GET['category']) ? $_GET['category'] : 0;
-		$cb = new CategoryBusiness();
-		$result = $cb->GetProductInGroup($cat, $page);
-		while ($row = mysqli_fetch_array($result)) {
+		$session_name = "products{$page}_{$cat}";
+
+		if (!isset($_SESSION["{$session_name}"])) {
+			$cb = new CategoryBusiness();
+			$result = $cb->GetProductInGroup($cat, $page);
+			while ($row = mysqli_fetch_array($result)) {
+				$_SESSION["{$session_name}"][] = $row;
+			}
+		}
+
+		$result = $_SESSION["{$session_name}"];
+		foreach ($result as $row) {
 			$this->ShowProduct($row['name'], $row['price'], $row['id']);
 		}
 	}

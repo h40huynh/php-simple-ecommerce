@@ -32,10 +32,19 @@ class CategoryBusiness
 
 	public function CaculateNumberOfLinks($cat_id)
 	{
+		$result = NULL;
+		$session_name = "numPages" . $cat_id;
+		if (isset($_SESSION["{$session_name}"])) {
+			$result = $_SESSION["{$session_name}"];
+			return $result;
+		}
+
 		$num = $this->GetAmountOfProductInCategory($cat_id);
 		$max = $this->MAX_PRODUCT;
 		$result = (float) $num / $max;
-		return ceil($result);
+		$result = ceil($result);
+		$_SESSION["{$session_name}"] = $result;
+		return $result;
 	}
 
 	public function GetProductInGroup($cat_id, $link_num)
