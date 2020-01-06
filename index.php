@@ -1,6 +1,8 @@
 <?php
 session_start();
-print_r($_SESSION);
+if (!isset($_SESSION['total']))
+  $_SESSION['total']=0;
+//print_r($_SESSION);
 ?>
 
 <!DOCTYPE html>
@@ -11,7 +13,7 @@ print_r($_SESSION);
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <title>Huynh Nhat Hao</title>
+  <title>NT208</title>
 </head>
 
 <body>
@@ -25,7 +27,7 @@ print_r($_SESSION);
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Home</span></a>
+          <a class="nav-link" href="./">Home</span></a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">About</a>
@@ -45,10 +47,10 @@ print_r($_SESSION);
           <a class="nav-link" href="#" tabindex="-1" aria-disabled="true">Contact</a>
         </li>
       </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
+       <!-- <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"> -->
+        <a href='./checkout.php' class="btn btn-outline-success my-2 my-sm-0" type="submit">Cart [<?php echo $_SESSION['total']; ?>]</a>
+     
     </div>
   </nav>
   <!-- /navbar -->

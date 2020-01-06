@@ -1,3 +1,8 @@
+<?php
+session_start();
+//print_r($_SESSION);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,31 +56,28 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-sm-3">
+    <div class="col-sm-3">
         <!-- Side nav -->
-        <div class="list-group list-group-flush mt-2">
-          <h3>
-            Categories
-          </h3>
-          <?php
-          include "./presentation/categoryP.php";
-          $cp = new CategoryPresentation();
-          $cp->ShowAllCategories();
-          ?>
-        </div>
-        <!-- /Side nav -->
-      </div>
+    </div>
       <div class="col-sm-9">
-        <!-- Products list -->
+        <h3>YOUR SHOPPING CART</h3>
         <div class="row">
-          <?php include "./presentation/productP.php";
-          $pb = new ProductionPresentation();
-          $pb->ShowItem();
-          ?>
-        </div>
+        <div class="col-sm-12">
+          <?php
+            include "./presentation/productP.php";
+            include "./include/helper/database.php";
 
-        <!-- /Products list -->
+            $ck = new ProductionPresentation();
+            $ck->showCart();
+          ?>
+          <!-- Side nav -->
+        </div>
+ 
+          <!-- Side nav -->
       </div>
+    </div>
+        <!-- /Products list -->
+    
     </div>
   </div>
 

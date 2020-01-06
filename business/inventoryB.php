@@ -1,4 +1,18 @@
+
 <?php
+ //include "../include/helper/database.php";
+ //include "./productAnalysisB.php";
+
+  //$t = new InventoryBusiness();
+
+  //$list = $t->getHighViewInPoorPerformance("2019-01-01", "2020-01-01");
+  //echo $t->getSearchPriceFromInternet(6);
+  //  for($i=0; $i<sizeof($list); $i++){
+  //    $t->updateNewPrice($list[$i]);
+  //  }
+  //for($i=1; $i<=48;$i++)
+     //$t->UpdatePerformanceTable($i, "2019-01-01", "2020-01-01");
+  //print_r($t->GetPoorPerformanceList("2019-01-01", "2020-01-01"));
 
 class InventoryBusiness
 {
@@ -12,7 +26,84 @@ class InventoryBusiness
       $plist["{$product_id}"] = $perfromance;
     }
     asort($plist);
+    $plist = array_slice($plist, 0, 10, true);
     return $plist;
+  }
+
+  public function getHighViewInPoorPerformance($from, $to)
+  {
+    $list = $this->GetPoorPerformanceList($from, $to);
+    $viewList = $this->getView($from, $to, $list);
+    $plist = array();
+    while ($row = mysqli_fetch_array($viewList))
+    {
+      $plist[] = $row['product_id'];
+    }
+    $plist = array_slice($plist, 0, 10, true);
+    print_r($plist);
+    return $plist;
+  }
+
+  public function getProductName($product_id)
+  {
+    $sql = "SELECT * FROM Products WHERE id = {$product_id}";
+    $db = new Database();
+    $result = $db->select($sql);
+    $row = mysqli_fetch_array($result);
+    return $row['name'];
+  }
+
+  public function getBasePrice($product_id)
+  {
+    $sql = "SELECT * FROM Products WHERE id = {$product_id}";
+    $db = new Database();
+    $result = $db->select($sql);
+    $row = mysqli_fetch_array($result);
+    return $row['price'];
+  }
+
+  public function getSearchPriceFromInternet($product_id)
+  {
+    $product_name = $this->getProductName($product_id);
+    $base_price = $this->getBasePrice($product_id);
+    $analys = new ProductAnalysisBusiness();
+    $analys->SearchCompetitivePrice($product_name, $base_price);
+    //$analys->TrainRule($product_name);
+  }
+
+  public function getProductPrice($product_id)
+  {
+    $sql = "SELECT * FROM Products WHERE id = {$product_id}";
+    $db = new Database();
+    $result = $db->select($sql);
+    $row = mysqli_fetch_array($result);
+    return $row['price'];
+  }
+
+  public function updateNewPrice($product_id)
+  {
+    $product_name = $this->getProductName($product_id);
+    $analys = new ProductAnalysisBusiness();
+    $min_price = $analys->GetMinPrice($product_name) * 0.95;
+    $recent_price = $this->getProductPrice($product_id);
+
+    $sql="";
+    if($min_price == $recent_price)
+      $sql = "UPDATE `products` SET `price`={$min_price} WHERE id={$product_id}";
+    else
+      $sql = "UPDATE `products` SET `price`={$min_price},`old_price`={$recent_price} WHERE id={$product_id}";
+    $db = new Database();
+		$result = $db->update($sql);
+  }
+
+  public function getView($from, $to, $list)
+  {
+    $tmp = array_keys($list);
+    $str = implode(",", array_keys($list));
+    $sql = "SELECT count(*) as view, product_id FROM `product_analysis` WHERE product_id in ({$str}) GROUP BY product_id ORDER BY count(*) DESC";
+    $db = new Database();
+    $result = $db->select($sql);
+    return $result;
   }
 
   public function GetLatestPerformance($product_id)
@@ -26,7 +117,7 @@ class InventoryBusiness
 
   public function GetRelavantProductID($from, $to)
   {
-    $sql = "SELECT DISTINCT product_id FROM inventory_performance WHERE date(from_date) > '{$from}' AND date(to_date) < '{$to}'";
+    $sql = "SELECT DISTINCT product_id FROM inventory_performance WHERE date(from_date) >= '{$from}' AND date(to_date) <= '{$to}'";
     $db = new Database();
     $result = $db->select($sql);
     return $result;
@@ -107,6 +198,5 @@ class InventoryBusiness
   }
 }
 
-$t = new InventoryBusiness();
-//$t->UpdatePerformanceTable(1, "2019-09-01", "2019-09-05");
-$t->GetPoorPerformanceList("2019-08-01", "2019-10-05");
+
+

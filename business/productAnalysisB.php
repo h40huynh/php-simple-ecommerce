@@ -1,17 +1,17 @@
 <?php
 // For test
 //include "../include/helper/database.php";
-include "./include/lib/simple_html_dom.php";
+//include "../include/lib/simple_html_dom.php";
 // --For test
 
 //$from = "2019-08-01";
 //$to = "2019-10-31";
 //$product_name = "iphone x 64gb";
-$product_name = "samsung galaxy a30s";
-$test_price = 16000000;
-$test = new ProductAnalysisBusiness();
+//$product_name = "samsung galaxy a30s";
+//$test_price = 16000000;
+//$test = new ProductAnalysisBusiness();
 //$link = "https://www.dienmayxanh.com/dien-thoai/iphone-x-64gb";
-$link = "https://www.thegioididong.com/dtdd/iphone-x-64gb";
+//$link = "https://www.thegioididong.com/dtdd/iphone-x-64gb";
 //$ret_array = $test->GetRevantLink($product_name);
 //print_r($ret_array);
 //$test->BuildUpDataset($product_name, $ret_array);
@@ -19,14 +19,14 @@ $link = "https://www.thegioididong.com/dtdd/iphone-x-64gb";
 //$test->TrainRule($product_name);
 //$test->GetUnfriendlyLinks($product_name);
 //$raw = $test->FindPrice($link);
-//$raw = "19.490.000₫ 19.990.000₫ Trả góp 0%
-//20.077.000₫ 20.740.000₫";
+//$raw = "21.980.000 ₫";
 //$test->GetPrice($raw);
 //echo $test->CheckPrice($test_price);
-$test->SearchCompetitivePrice($product_name);
+//$test->SearchCompetitivePrice($product_name);
 class ProductAnalysisBusiness
 {
-	private $high_view = 2;
+	//private $high_view = 2;
+	private $base_price = 0;
 	private $google_link = "https://google.com/search?q=";
 
 	function GetContent($url)
@@ -50,9 +50,12 @@ class ProductAnalysisBusiness
 	{
 		$search = $this->BuildSearchString($product_name);
 		$url = $this->google_link . $search;
+		echo $url;
 
 		$html = $this->GetContent($url);
-		//$html = file_get_html($url);
+		// $content = file_get_html($url);
+		// $html = new simple_html_dom();
+		// $html->load($content);
 
 		$return_array = array();
 		foreach ($html->find('a') as $element) {
@@ -99,7 +102,7 @@ class ProductAnalysisBusiness
 			//echo $element->outertext.'<br>';   
 			//echo $class;
 			$pt1 = $element->plaintext . '<br>';
-			echo "$pt1 <br>";
+			echo "$pt1";
 			$check_price = $this->GetPrice($pt1);
 			$flag = $this->CheckPrice($check_price);
 			if ($flag == 1) {
@@ -124,7 +127,7 @@ class ProductAnalysisBusiness
 			//echo $element->outertext.'<br>';   
 			//echo $id;
 			$pt1 = $element->plaintext . '<br>';
-			echo "$pt1 <br>";
+			echo "$pt1";
 			$check_price = $this->GetPrice($pt1);
 			$flag = $this->CheckPrice($check_price);
 			if ($flag == 1) {
@@ -211,6 +214,8 @@ class ProductAnalysisBusiness
 	public function BuildSearchString($search)
 	{
 		$result = str_replace(" ", "+", $search);
+		$result = str_replace("(", "", $result);
+		$result = str_replace(")", "", $result);
 		return $result;
 	}
 
@@ -349,6 +354,10 @@ class ProductAnalysisBusiness
 
 	public function GetPrice($raw_string)
 	{
+		$string = htmlentities($raw_string, null, 'utf-8');
+		$raw_string = str_replace("&nbsp;", "", $string);
+		$raw_string = html_entity_decode($raw_string);
+
 		$pt1 = implode("", explode(" ", $raw_string));
 		$end = stripos($pt1, "₫");
 		if ($end == false)
@@ -358,7 +367,7 @@ class ProductAnalysisBusiness
 		$base = 1;
 		while ($start >= 0) {
 			$link = substr($pt1, $start, $end - $start);
-			if (is_numeric($link) || $link == ".") {
+			if (is_numeric($link) || $link == "." || $link == ",") {
 				if (is_numeric($link)) {
 					$price += $base * intval($link);
 					$base *= 10;
@@ -369,6 +378,7 @@ class ProductAnalysisBusiness
 			$end = $start;
 			$start = $end - 1;
 		}
+		echo "Get Price: {$price} <br><br>";
 		return $price;
 	}
 
@@ -377,7 +387,8 @@ class ProductAnalysisBusiness
 
 	public function CheckPrice($check_price)
 	{
-		$base_price = 6500000;
+		$base_price = $this->base_price;
+		echo $base_price;
 		$num = $base_price - $check_price;
 		if ($num < 0)
 			$num = -$num;
@@ -403,8 +414,9 @@ class ProductAnalysisBusiness
 		return $row['PRICE'];
 	}
 
-	public function SearchCompetitivePrice($product_name)
+	public function SearchCompetitivePrice($product_name, $base_price)
 	{
+		$this->base_price = $base_price;
 		$price = 0;
 		$price = $this->GetMinPrice($product_name);
 		if ($price > 0)
@@ -432,7 +444,7 @@ class ProductAnalysisBusiness
 					}
 					$count++;
 					$is_price = 1;
-				}
+				} 
 			}
 			echo "MIN PRICE: $min_price";
 		}

@@ -5,7 +5,7 @@ class Database
     public $host = 'localhost';
     public $user = 'root';
     public $pass = '';
-    public $dbname = 'nt208';
+    public $dbname = 'web_ban_dt';
 
     public $link;
     public $error;
