@@ -28,15 +28,17 @@ session_start();
             $ck->showCart();
             ?>
           </div>
-          <!-- PayPal Logo -->
-          <table>
-            <tr>
-              <td align="center"></td>
-            </tr>
-            <tr>
-              <td align="center"><a href="./paypal.php" title="How PayPal Works"><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png" alt="Check out with PayPal" /></a></td>
-            </tr>
-          </table><!-- PayPal Logo -->
+          <?php if ($_SESSION['total'] != 0) { ?>
+            <!-- PayPal Logo -->
+            <table>
+              <tr>
+                <td align="center"></td>
+              </tr>
+              <tr>
+                <td align="center"><a href="./paypal.php" title="How PayPal Works"><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png" alt="Check out with PayPal" /></a></td>
+              </tr>
+            </table><!-- PayPal Logo -->
+          <?php } ?>
         </div>
       </div>
     </div>
