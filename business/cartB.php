@@ -65,6 +65,7 @@ class CartBusiness
 
 	public function CreatePaymentPaypal()
 	{
+		//Cái này SDK người ta thiết kế, dùng theo thôi chứ có hiểu gì đâu
 		$clientId = "AWLT6HZIBFmKiCHuZBicz3basprnKUEymgMnncIfRrHV39iB_SOM7-1CJMsq4Q5KYEUWF7OuBWHu-uYG";
 		$secretId = "EJ9VYgTBf72JyhjDxahLDXMMQITSlWDjxgkNCgUY26h1jflhkn4wQFDYxGEVQoyarDwKYeeE8llluiQ0";
 		$returnUrl = "http://localhost/web1/approva.php?success=true";
