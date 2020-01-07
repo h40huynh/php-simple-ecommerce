@@ -33,8 +33,21 @@ class CartBusiness
 			header("Location: {$_GET['redirect']}");
 			return;
 		}
-		$_SESSION["{$session_name}_{$product_id}"] -= 1;
-		$_SESSION["total"] -= 1;
+		if ($_SESSION["{$session_name}_{$product_id}"] == 1) {
+			$this->deleteProductFromCart($product_id);
+		} else {
+			$_SESSION["{$session_name}_{$product_id}"] -= 1;
+			$_SESSION["total"] -= 1;
+		}
+	}
+
+	public function deleteProductFromCart($product_id)
+	{
+		$session_name = "c_product";
+		$index = array_search($product_id, $_SESSION["$session_name"], true);
+		unset($_SESSION["$session_name"][$index]);
+		$_SESSION['total'] -= $_SESSION["{$session_name}_{$product_id}"];
+		unset($_SESSION["{$session_name}_{$product_id}"]);
 	}
 
 	public function handleCartFromUrl()
@@ -44,6 +57,8 @@ class CartBusiness
 			$this->increaseProductToCart($product_id);
 		} else if ($_GET['action'] == 'rm') {
 			$this->decreaseProductToCart($product_id);
+		} else if ($_GET['action'] == 'del') {
+			$this->deleteProductFromCart($product_id);
 		}
 		header("Location: {$_GET['redirect']}");
 	}

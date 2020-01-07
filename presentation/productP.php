@@ -149,6 +149,7 @@ class ProductionPresentation
 					<h6> Quantity: {$_SESSION["{$session_name}_{$product_id}"]} </h6> 
 					<a href="./cart.php?product={$product_id}&redirect={$_SERVER['REQUEST_URI']}&action=add" class="btn btn-warning">+</a>
 					<a href="./cart.php?product={$product_id}&redirect={$_SERVER['REQUEST_URI']}&action=rm" class="btn btn-warning">-</a>
+					<a href="./cart.php?product={$product_id}&redirect={$_SERVER['REQUEST_URI']}&action=del" class="btn btn-danger">x</a>
 				</div>
 			</div>
 			<hr>
@@ -160,16 +161,12 @@ class ProductionPresentation
 
 	public function showCart()
 	{
-		// $p = isset($_GET['product']) ? $_GET['product'] : 0;
 		$session_name = "c_product";
-		if (!isset($_SESSION["$session_name"])) {
+		if (!isset($_SESSION["$session_name"]) || count($_SESSION["$session_name"]) == 0) {
 			echo "Add one more product to show your cart";
 			return;
 		}
-		// if (!isset($_SESSION["$session_name"]) || !in_array($p, $_SESSION["$session_name"]))
-		// {
-		// 	$_SESSION["$session_name"][] = $p;		
-		// }
+
 		$total = 0;
 		foreach ($_SESSION["$session_name"] as $id) {
 			$total += $this->showProductInCart($id);

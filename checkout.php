@@ -28,7 +28,15 @@ session_start();
             $ck->showCart();
             ?>
           </div>
-          <a class="btn btn-warning" href="./paypal.php">Buy now with paypal</a>
+          <!-- PayPal Logo -->
+          <table>
+            <tr>
+              <td align="center"></td>
+            </tr>
+            <tr>
+              <td align="center"><a href="./paypal.php" title="How PayPal Works"><img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/checkout-logo-large.png" alt="Check out with PayPal" /></a></td>
+            </tr>
+          </table><!-- PayPal Logo -->
         </div>
       </div>
     </div>
