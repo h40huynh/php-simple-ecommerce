@@ -27,8 +27,8 @@ class ProductionPresentation
 	public function ShowSingleProduct($id, $name, $price, $url, $old_price)
 	{
 		$str = "<br/>";
-		if($old_price != NULL){
-			$str="$old_price ₫";
+		if ($old_price != NULL) {
+			$str = "$old_price ₫";
 		}
 		$price = number_format($price);
 		$product = <<<DELIMITER
@@ -42,7 +42,7 @@ class ProductionPresentation
 			<h5 class="card-title">{$name}</h5>
 			<h5 style= "color:red">{$price}₫</h5>
 		  	<h6 style="text-decoration: line-through;text-decoration-line: line-through;color:gray">{$str}</h6>
-			<a href="./cart.php?product={$id}&redirect={$_SERVER['REQUEST_URI']}" class="btn btn-primary">Add to cart</a>
+			<a href="./cart.php?product={$id}&redirect={$_SERVER['REQUEST_URI']}&action=add" class="btn btn-warning">Add to cart</a>
 		</div>
 	</div>
 	DELIMITER;
@@ -52,19 +52,19 @@ class ProductionPresentation
 	public function ShowProduct($name, $price, $id, $url, $old_price)
 	{
 		$str = "<br/>";
-		if($old_price != NULL){
-			$str="$old_price ₫";
+		if ($old_price != NULL) {
+			$str = "$old_price ₫";
 		}
 		$price = number_format($price);
 		$product = <<<DELIMITER
-	<div class="col-sm-4">
-	  <div class="card mt-2">
-		<img src="./include/images/{$url}" height=280 class="card-img-top">
+	<div class="col-sm-3">
+	  <div class="card mt-5">
+		<img src="./include/images/{$url}" height=200 class="card-img-top">
 		<div class="card-body">
 		  <h6 class="card-title"><a href="./item.php?product_id={$id}">{$name}</a></h6>
 		  <h5 style= "color:red">{$price}₫</h5>
 		  <h6 style="text-decoration: line-through;text-decoration-line: line-through;color:gray">{$str}</h6>
-		  <a href="./cart.php?product={$id}&redirect={$_SERVER['REQUEST_URI']}&action=add" class="btn btn-primary">Add to cart</a>
+		  <a href="./cart.php?product={$id}&redirect={$_SERVER['REQUEST_URI']}&action=add" class="btn btn-warning">Add to cart</a>
 		</div>
 	  </div>
 	</div>
@@ -93,7 +93,7 @@ class ProductionPresentation
 			$pb = new ProductBusiness();
 			$result = $pb->GetProductByID($product_id);
 			$row = mysqli_fetch_array($result);
-			$this->ShowProduct($row['name'], $row['price'], $row['id'],$row['url'],$row['old_price']);
+			$this->ShowProduct($row['name'], $row['price'], $row['id'], $row['url'], $row['old_price']);
 		}
 	}
 
@@ -102,7 +102,7 @@ class ProductionPresentation
 		$pb = new ProductBusiness();
 		$result = $pb->GetProductInCategory();
 		while ($row = mysqli_fetch_array($result)) {
-			$this->ShowProduct($row['name'], $row['price'], $row['id'],$row['url'],$row['old_price']);
+			$this->ShowProduct($row['name'], $row['price'], $row['id'], $row['url'], $row['old_price']);
 		}
 	}
 
@@ -125,7 +125,7 @@ class ProductionPresentation
 
 		$result = $_SESSION["{$session_name}"];
 		foreach ($result as $row) {
-			$this->ShowProduct($row['name'], $row['price'], $row['id'],$row['url'],$row['old_price']);
+			$this->ShowProduct($row['name'], $row['price'], $row['id'], $row['url'], $row['old_price']);
 		}
 	}
 
@@ -147,29 +147,31 @@ class ProductionPresentation
 					<h6 class="card-title">{$row['name']}</h6>
 					<h5 style= "color:red">{$price}₫</h5>
 					<h6> Quantity: {$_SESSION["{$session_name}_{$product_id}"]} </h6> 
-					<a href="./cart.php?product={$product_id}&redirect={$_SERVER['REQUEST_URI']}&action=add" class="btn btn-primary">+</a>
-					<a href="./cart.php?product={$product_id}&redirect={$_SERVER['REQUEST_URI']}&action=rm" class="btn btn-primary">-</a>
+					<a href="./cart.php?product={$product_id}&redirect={$_SERVER['REQUEST_URI']}&action=add" class="btn btn-warning">+</a>
+					<a href="./cart.php?product={$product_id}&redirect={$_SERVER['REQUEST_URI']}&action=rm" class="btn btn-warning">-</a>
 				</div>
 			</div>
 			<hr>
 	DELIMITER;
 		echo $product;
-		
-		return $row['price']*$_SESSION["{$session_name}_{$product_id}"];
+
+		return $row['price'] * $_SESSION["{$session_name}_{$product_id}"];
 	}
 
 	public function showCart()
 	{
 		// $p = isset($_GET['product']) ? $_GET['product'] : 0;
-		 $session_name = "c_product";
-
+		$session_name = "c_product";
+		if (!isset($_SESSION["$session_name"])) {
+			echo "Add one more product to show your cart";
+			return;
+		}
 		// if (!isset($_SESSION["$session_name"]) || !in_array($p, $_SESSION["$session_name"]))
 		// {
 		// 	$_SESSION["$session_name"][] = $p;		
 		// }
 		$total = 0;
-		foreach ($_SESSION["$session_name"] as $id)
-		{
+		foreach ($_SESSION["$session_name"] as $id) {
 			$total += $this->showProductInCart($id);
 		}
 		$total = number_format($total);
